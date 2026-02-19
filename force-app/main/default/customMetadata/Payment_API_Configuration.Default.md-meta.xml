@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Default</label>
+    <protected>false</protected>
+    <values>
+        <field>Generate_Payment_Path__c</field>
+        <value xsi:type="xsd:string">/v1/7fe02462-950a-422d-b112-723418ddef51</value>
+    </values>
+    <values>
+        <field>Status_Payment_Path__c</field>
+        <value xsi:type="xsd:string">/v1/4098375e-b202-4b2c-8d35-98e5059260f3</value>
+    </values>
+</CustomMetadata>
