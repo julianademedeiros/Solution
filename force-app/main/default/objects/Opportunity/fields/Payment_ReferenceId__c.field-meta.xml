@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Payment_Provider_Reference__c</fullName>
+    <fullName>Payment_ReferenceId__c</fullName>
     <externalId>false</externalId>
-    <label>Payment Provider Reference</label>
+    <label>Payment ReferenceId</label>
     <length>80</length>
     <required>false</required>
     <trackFeedHistory>false</trackFeedHistory>
