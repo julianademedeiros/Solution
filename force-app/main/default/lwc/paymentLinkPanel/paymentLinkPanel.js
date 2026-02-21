@@ -17,6 +17,7 @@ export default class PaymentLinkPanel extends LightningElement {
     @track lastSyncAt;
     @track errorMessage;
     @track isGenerating = false;
+    @track isRefreshing = false;
 
     @wire(getRecord, { recordId: '$recordId', fields: [paymentStatus]})
     wiredOpportunity({ error, data }) {
@@ -31,6 +32,10 @@ export default class PaymentLinkPanel extends LightningElement {
 
     get isGenerateDisabled() {
         return (this.opportunityStatus === 'Sent' || this.opportunityStatus === 'Paid');
+    }
+
+    get isRefreshDisabled() {
+        return !(this.opportunityStatus === 'Sent' || this.opportunityStatus === 'Failed');
     }
 
     handleGenerateLink() {
@@ -58,7 +63,7 @@ export default class PaymentLinkPanel extends LightningElement {
                     this.dispatchEvent(
                         new ShowToastEvent({
                             title: 'Success',
-                            message: 'Payment link generated and sent to customer.',
+                            message: 'Payment link generated.',
                             variant: 'success'
                         })
                     );
@@ -86,23 +91,52 @@ export default class PaymentLinkPanel extends LightningElement {
 
     handleRefreshStatus() {
         this.clearError();
+        this.isRefreshing = true;
 
         refreshPaymentStatus({ opportunityId: this.recordId })
             .then(result => {
                 if (result.errorMessage) {
                     this.errorMessage = result.errorMessage;
+                    
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Error',
+                            message: this.errorMessage,
+                            variant: 'error'
+                        })
+                    );
                 } else {
                     this.paymentLinkUrl = result.paymentLinkUrl;
                     this.referenceId = result.referenceId;
                     this.status = result.status;
                     this.lastSyncAt = result.lastSyncAt;
 
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Success',
+                            message: 'Payment status updated.',
+                            variant: 'success'
+                        })
+                    );
+
+                    getRecordNotifyChange([{ recordId: this.recordId}]);
                     refreshApex(this.opportunityRecord);
                 }
             })
             .catch(error => {
                 this.errorMessage =
                     error.body ? error.body.message : error.message;
+
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Error',
+                            message: this.errorMessage,
+                            variant: 'error'
+                        })
+                    );
+            })
+            .finally(() => {
+                this.isRefreshing = false;
             });
     }
 

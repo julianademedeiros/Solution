@@ -124,7 +124,7 @@ public with sharing class PaymentService {
                 return result;                
             }
 
-            // Populate result DTO for LWC
+            // Populate result DTO for LWC only when successful
             result.paymentLinkUrl = opp.Payment_Link_URL__c;
             result.referenceId = opp.Payment_ReferenceId__c;
             result.status = response.status;
