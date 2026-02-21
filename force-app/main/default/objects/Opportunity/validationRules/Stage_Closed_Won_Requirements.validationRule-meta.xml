@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Stage_Closed_Won_Requirements</fullName>
+    <active>true</active>
+    <description>An opportunity can only be closed-won when it has met all of the following requirements:
+- Payment Status = Paid
+- Payment Link &lt;&gt; null</description>
+    <errorConditionFormula>AND(
+    IsWon,
+    ISCHANGED(StageName),
+
+    OR(
+        TEXT( Payment_Status__c ) &lt;&gt; &quot;Paid&quot;,
+        ISBLANK( Payment_Link_URL__c )  
+    )
+)</errorConditionFormula>
+    <errorMessage>Complete the payment process and ensure the payment status is &quot;Paid&quot; before moving this opportunity to Closed-Won.</errorMessage>
+</ValidationRule>
