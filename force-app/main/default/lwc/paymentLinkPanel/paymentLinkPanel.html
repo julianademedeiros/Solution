@@ -1,0 +1,45 @@
+<template>
+    <lightning-card title="Payment Link Panel" icon-name="standard:opportunity">
+        <div class="slds-p-around_small">
+            <template if:true={paymentLinkUrl}>
+                <p><strong>Payment Link: </strong> 
+                     <a href={paymentLinkUrl} target="_blank"> {paymentLinkUrl}</a>
+                </p>
+            </template>
+
+            <template if:true={referenceId}>
+                <p><strong>Reference ID:</strong> {referenceId}</p>
+            </template>
+
+            <template if:true={status}>
+                <p><strong>Status:</strong> {status}</p>
+            </template>
+
+            <template if:true={lastSyncAt}>
+                <p><strong>Last Sync At:</strong> {lastSyncAt}</p>
+            </template>
+
+            <template if:true={errorMessage}>
+                <p class="slds-text-color_error">
+                    <strong>Error:</strong> {errorMessage}
+                </p>
+            </template>
+        </div>
+
+        <div class="slds-p-around_small">
+            <lightning-button
+                variant="brand"
+                label="Generate Payment Link"
+                onclick={handleGenerateLink}
+                class="slds-m-right_small"
+                disabled={isGenerateDisabled}>
+            </lightning-button>
+
+            <lightning-button
+                variant="neutral"
+                label="Refresh Status"
+                onclick={handleRefreshStatus}>
+            </lightning-button>
+        </div>
+    </lightning-card>
+</template>
