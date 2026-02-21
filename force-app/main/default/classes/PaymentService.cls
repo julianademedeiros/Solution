@@ -30,13 +30,13 @@ public with sharing class PaymentService {
             ];
             // Check if primary contact exists in Opportunity Contact Role, is it still associated
             if (opp.OpportunityContactRoles.isEmpty() || opp.OpportunityContactRoles[0].Contact == null) {
-                result.errorMessage = 'Opportunity ' + opportunityId + ' has no primary contact.';
+                result.errorMessage = 'This opportunity has no primary contact.';
                 return result;
             }
 
             String customerEmail = opp.OpportunityContactRoles[0].Contact.Email;
             if(String.isBlank(customerEmail)){
-               result.errorMessage = 'Primary contact for Opportunity ' + opportunityId + ' has no email.';
+               result.errorMessage = 'The primary contact in this opportunity has no email.';
                return result;
             }
 
@@ -58,7 +58,7 @@ public with sharing class PaymentService {
                 update opp;
 
             } catch (DmlException de) {
-                result.errorMessage = 'Failed to update Opportunity ' + opportunityId + ': ' + de.getMessage();
+                result.errorMessage = 'Failed to update Opportunity ' + opportunityId + '. Contact your administrator with the following message: ' + de.getMessage();
                 System.debug('PaymentService.generatePaymentLink DML error for Opportunity ' 
                              + opportunityId + ': ' + de);
                 return result; // If update fails, the process ends here and doesn't update LWC
@@ -71,12 +71,12 @@ public with sharing class PaymentService {
             result.lastSyncAt = opp.Payment_Last_Sync_At__c;
 
         } catch (CalloutException ce) {
-            result.errorMessage = 'Payment provider call failed for Opportunity ' + opportunityId + ': ' + ce.getMessage();
+            result.errorMessage = 'Payment provider call failed for Opportunity ' + opportunityId + '. Contact your administrator with the following message: ' + ce.getMessage();
             System.debug('PaymentService.generatePaymentLink callout error for Opportunity ' 
                          + opportunityId + ': ' + ce);
 
         } catch (Exception e) {
-            result.errorMessage = 'Unexpected error during payment link generation for Opportunity ' + opportunityId + ': ' + e.getMessage();
+            result.errorMessage = 'Unexpected error during payment link generation for Opportunity ' + opportunityId + '. Contact your administrator with the following message: ' + e.getMessage();
             System.debug('PaymentService.generatePaymentLink unexpected error for Opportunity ' 
                          + opportunityId + ': ' + e);
         }
@@ -101,7 +101,7 @@ public with sharing class PaymentService {
             ];
 
             if (String.isBlank(opp.Payment_ReferenceId__c)) {
-                result.errorMessage = 'No payment reference found for Opportunity ' + opportunityId + '.';
+                result.errorMessage = 'No payment reference Id found for Opportunity ' + opportunityId + '.';
                 return result;
             }
 
@@ -118,7 +118,7 @@ public with sharing class PaymentService {
             update opp;
 
             } catch (DmlException de) {
-                result.errorMessage = 'Failed to update Opportunity payment status ' + opportunityId + ': ' + de.getMessage();
+                result.errorMessage = 'Failed to update Opportunity payment status ' + opportunityId + '. Contact your administrator with the following message: ' + de.getMessage();
                 System.debug('PaymentService.refreshPaymentStatus DML error for Opportunity ' 
                              + opportunityId + ': ' + de);
                 return result;                
@@ -131,11 +131,11 @@ public with sharing class PaymentService {
             result.lastSyncAt = opp.Payment_Last_Sync_At__c;
 
         } catch (CalloutException ce) {
-            result.errorMessage = 'Payment provider call failed for Opportunity ' + opportunityId + ': ' + ce.getMessage();
+            result.errorMessage = 'Payment provider call failed for Opportunity ' + opportunityId + '. Contact your administrator with the following message: ' + ce.getMessage();
             System.debug('PaymentService.refreshPaymentStatus callout error for Opportunity ' 
                          + opportunityId + ': ' + ce);
         } catch (Exception e) {
-            result.errorMessage = 'Unexpected error during payment status refreshfor Opportunity ' + opportunityId + ': ' + e.getMessage();
+            result.errorMessage = 'Unexpected error during payment status refresh for Opportunity ' + opportunityId + '. Contact your administrator with the following message: ' + e.getMessage();
             System.debug('PaymentService.refreshPaymentStatus unexpected error for Opportunity ' 
                          + opportunityId + ': ' + e);
         }
